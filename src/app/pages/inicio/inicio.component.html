@@ -1,0 +1,100 @@
+@defer (on viewport) {
+
+  <app-navbar/>
+
+
+    <div class="container text-center hero">
+      <div class="row">
+
+        <div class="col d-flex justify-content-center">
+
+          <a href="/clientes">
+            <div class="card text-bg-dark mb-3" style="width: 18rem;">
+              <div class="card-header">Clientes</div>
+              <div class="card-body">
+                <i class="fa-solid fa-user fa-2x" style="color: #ffffff;"></i>
+              </div>   
+            </div>
+          </a>
+        </div>
+        <div class="col d-flex justify-content-center">
+          <a href="/prestamos">
+            <div class="card text-bg-dark mb-3" style="width: 18rem;">
+              <div class="card-header">Prestamos</div>
+              <div class="card-body">
+                <i class="fa-solid fa-hand-holding-medical fa-2x" style="color: #ffffff;"></i>
+              </div>   
+            </div>
+          </a>
+        </div>
+        <div class="col d-flex justify-content-center">
+          <a href="/pagos">
+            <div class="card text-bg-dark mb-3" style="width: 18rem;">
+              <div class="card-header">Pagos</div>
+              <div class="card-body">
+                <i class="fa-solid fa-money-check-dollar fa-2x" style="color: #ffffff;"></i>
+              </div>   
+            </div>
+          </a>
+        </div>
+        <div class="col d-flex justify-content-center">
+          <a href="/configuracion">
+            <div class="card text-bg-dark mb-3" style="width: 18rem;">
+              <div class="card-header">Configuracion</div>
+              <div class="card-body">
+                <i class="fa-solid fa-gear fa-2x" style="color: #ffffff;"></i>
+              </div>   
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+                      
+
+    } @placeholder {
+    <p>Cargando...</p>
+    } @loading(minimum 0.5s) {
+        <div class="d-flex justify-content-center align-items-center vh-100">
+        <div aria-label="Orange and tan hamster running in a metal wheel" role="img" class="wheel-and-hamster">
+            <div class="wheel"></div>
+            <div class="hamster">
+                <div class="hamster__body">
+                    <div class="hamster__head">
+                        <div class="hamster__ear"></div>
+                        <div class="hamster__eye"></div>
+                        <div class="hamster__nose"></div>
+                    </div>
+                    <div class="hamster__limb hamster__limb--fr"></div>
+                    <div class="hamster__limb hamster__limb--fl"></div>
+                    <div class="hamster__limb hamster__limb--br"></div>
+                    <div class="hamster__limb hamster__limb--bl"></div>
+                    <div class="hamster__tail"></div>
+                </div>
+            </div>
+            <div class="spoke"></div>
+        </div>
+    </div>
+    }   
+
+  <!-- @for (cliente of clientes; track $index) {
+                        <tr>
+                          <td class="px-6 py-4 whitespace-nowrap">{{ cliente.nombre }}</td>
+                          <td class="px-6 py-4 whitespace-nowrap">{{ cliente.cedula }}</td>
+                          <td class="px-6 py-4 whitespace-nowrap">{{ cliente.celular }}</td>
+                          <td class="px-6 py-4 whitespace-nowrap">
+                            <button class="w-40 h-12 bg-white cursor-pointer rounded-3xl border-2 border-[#9748FF] shadow-[inset_0px_-2px_0px_1px_#9748FF] group hover:bg-[#9748FF] transition duration-300 ease-in-out">
+                              <span class="font-medium text-[#333] group-hover:text-white">Hover me</span>
+                             </button>
+                          </td>
+
+                          <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="#" class="text-indigo-600 hover:text-indigo-900">
+                              <i class="fas fa-pen-to-square mr-2"></i>
+                            </a>
+                            <a href="#" class="text-red-600 hover:text-red-900">
+                              <i class="fas fa-trash mr-2"></i>
+                            </a>
+                          </td>
+                        </tr>
+-->
