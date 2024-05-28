@@ -1,3 +1,83 @@
-<app-navbar/>
-
-<div class="container"><p>clientedetalle works!</p></div>
+@if (loading) {
+<app-loading />
+} @if (!loading) {
+<app-navbar />
+<div class="container">
+  <!-- ini contenido modal -->
+  <div class="text-center d-flex justify-content-center">
+    <div>
+      <button class="btn btn-dark m-1" (click)="naviga()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Regresar
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-success m-1">
+        <i class="fa-solid fa-coins"></i>
+        Prestamo
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-primary m-1">
+        <i class="fa-solid fa-pen"></i>
+        Actualizar
+      </button>
+    </div>
+    <div>
+      <button class="btn btn-danger m-1" (click)="confirmDelete()">
+        <i class="fa-solid fa-trash"></i>
+        Eliminar
+      </button>
+    </div>
+  </div>
+  <form class="row g-3">
+    <div class="col-md-6">
+      <label for="validationDefault01" class="form-label"
+        >Nombre completo</label
+      >
+      <input
+        type="text"
+        class="form-control"
+        value="{{ cliente?.nombre }}"
+        id="documento"
+        formControlName="nombre"
+        required
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="validationDefault02" class="form-label">Documento</label>
+      <input
+        type="text"
+        class="form-control"
+        id="documento"
+        formControlName="documento"
+        value="{{ cliente?.cedula }}"
+        required
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="validationDefault02" class="form-label">Celular</label>
+      <input
+        type="text"
+        class="form-control"
+        id="celular"
+        formControlName="celular"
+        value="{{ cliente?.celular }}"
+        required
+      />
+    </div>
+    <div class="col-md-6">
+      <label for="validationDefault02" class="form-label">Dirección</label>
+      <input
+        type="text"
+        class="form-control"
+        id="direccion"
+        formControlName="direccion"
+        value="{{ cliente?.direccion }}"
+        required
+      />
+    </div>
+  </form>
+  <app-prestamos/>
+</div>
+}

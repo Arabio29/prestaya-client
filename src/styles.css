@@ -1,7 +1,17 @@
 @import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
-
 :root {
-    color-scheme: dark;
-  }
+  --primary-color: #007bff; /* Color primario */
+  --background-color: #343a40; /* Color de fondo */
+  --text-color: #ffffff; /* Color del texto */
+}
 
+.dark-mode {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.dark-mode .btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}

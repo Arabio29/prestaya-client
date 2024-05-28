@@ -1,59 +1,89 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-import { ClienteService } from '../../services/ClienteService';
+import { ClienteService } from '../../services/Cliente.service';
 import { HttpClientModule } from '@angular/common/http';
-import { Cliente } from '../../models/cliente';
+import { Cliente, ResponseData } from '../../models/cliente';
+import {ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+import { Router } from '@angular/router';
+import { AlertServiceService } from '../../services/alert.service.service';
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [NavbarComponent, HttpClientModule],
+  imports: [NavbarComponent, HttpClientModule, ReactiveFormsModule],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
 
 export class ClientesComponent implements OnInit {
 
-  constructor(private clienteService: ClienteService) {}
-
   clientes: Cliente[] = [];
+  errorMessage: string = '';
   client: any = {};
   ubicacion: any = {};
+  
+
+  clienteForm: FormGroup
+
+  constructor(private form: FormBuilder, private clienteService: ClienteService, private _router: Router, private alertService: AlertServiceService) {
+    this._router = _router;
+    this.clienteForm = this.form.group({
+      nombre: ['', Validators.required],
+      documento: ['', Validators.required],
+      celular: ['', Validators.required],
+      direccion: ['', Validators.required]
+    });
+  }
+
 
   ngOnInit(): void {
     this.getAllClient();
   }
 
+  navegate(id:number){
+    console.log(id)
+    this._router.navigate(['/clientes', id])
+  }
+
   getAllClient(): void {
     this.clienteService.getAllClients().subscribe(
-      response => {
-        this.clientes = response; // Asignar directamente la respuesta a la propiedad clientes
-        console.log(this.clientes);
+      (response: ResponseData | Cliente[]) => {
+        if (Array.isArray(response)) {
+          this.clientes = response as Cliente[];
+        } else {
+          if (response.status === 'OK' && response.data) {
+            this.clientes = response.data;
+          } else {
+            this.errorMessage = response.error || 'Error en la respuesta del servidor';
+          }
+        }
       },
       error => {
         console.error('Error al obtener los clientes:', error);
+        this.errorMessage = 'Error en la comunicación con el servidor'
       }
     );
   }
 
-  /* getAllClient(){
-    this.clienteService.getAllClients().subscribe(
-      (clientes: Cliente[]) => {
-        this.clientes = clientes;
-        console.log(this.clientes);
-      },
-      (error) => {
-        console.error('Error al obtener los clientes:', error);
-      }
-    );
-  } */
+  enviar(){
+    if (this.clienteForm.valid) {
+      const cliente = this.clienteForm.value;
+      console.log(cliente)
+       this.clienteService.saveClient(cliente).subscribe(
+        response => {
+          this.alertService.success('Cliente registrado exitosamente');
+          this.getAllClient();
+        },
+        error => {
+          this.alertService.error('Error al registrar el cliente');
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    } 
+  }
 
- /*  clientes: Cliente[] = [
-    { nombre: "eliasib", cedula: "1004806951", celular: "3219591377" },
-    { nombre: "juanes", cedula: "14543633346", celular: "321457377" },
-    { nombre: "sebastian", cedula: "345634777", celular: "34574577377" },
-    { nombre: "johan", cedula: "9647545777", celular: "3299943377" }
-  ]; */
+
 
   registrarCliente() {
     const opciones: PositionOptions = {
@@ -61,6 +91,7 @@ export class ClientesComponent implements OnInit {
       timeout: 20000, // 20 segundos
       maximumAge: 0 // No utilizar la caché
     };
+  
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.ubicacion = {
@@ -68,20 +99,25 @@ export class ClientesComponent implements OnInit {
           longitud: position.coords.longitude
         };
         this.client.ubicacion = this.ubicacion;
-        console.log(this.ubicacion)
-       /* this.clienteService.registrarCliente(this.cliente).subscribe(
+        console.log(this.ubicacion);
+  
+        
+/*         this.clienteService.registrarCliente(this.cliente).subscribe(
           (response) => {
             console.log("Cliente registrado exitosamente");
           },
           (error) => {
             console.log("Error al registrar el cliente:", error);
           }
-        );*/
+        );
+         */
       },
       (error) => {
         console.log("Error al obtener la ubicación:", error);
       }
     );
-    opciones
   }
+  
+
+  //add
 }

@@ -2,32 +2,32 @@
 
 <div class="container d-flex justify-content-end m-1">
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLabel">
+    <i class="fa-solid fa-plus"></i>
     Agregar cliente
   </button>
 </div>
 
 <div class="container">
-    <table class="table table-dark table-striped">
+    <table class="table table-striped table-hover">
       <thead>
         <tr>
+          <th scope="col">#</th>
           <th scope="col">Documento</th>
           <th scope="col">Nombre</th>
-          <th scope="col">Celular</th>
+          <!-- <th scope="col">Celular</th> -->
           <th scope="col">Detalle</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="table-group-divider">
         @for (cliente of clientes; track $index) {
         <tr>
           <td>{{ cliente.id }}</td>
           <td>{{ cliente.cedula }}</td>
           <td>{{ cliente.nombre }}</td>
-          <td>{{ cliente.celular }}</td>
-          <td>{{ cliente.nombre}}</td>
-          <td>{{ cliente.prestamos}}</td>
+         <!--  <td>{{ cliente.celular }}</td> -->
           <td>
-            <button class="btn btn-outline-primary">Detalles</button>
+            <button class="btn btn-outline-primary" (click)="navegate(cliente.id)">Detalles</button>
           </td>
         </tr>
         }@empty {
@@ -42,7 +42,7 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModalLabel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -51,39 +51,45 @@
       </div>
       <div class="modal-body">
        <!-- ini contenido modal -->
-       <form class="row g-3">
+       <form class="row g-3" [formGroup]="clienteForm" (ngSubmit)="enviar()">
         <div class="col-md-12">
           <label for="validationDefault01" class="form-label">Nombre completo</label>
-          <input type="text" class="form-control" id="validationDefault01" value="" required>
+          <input type="text" class="form-control" id="documento" formControlName="nombre" required>
         </div>
         <div class="col-md-6">
           <label for="validationDefault02" class="form-label">Documento</label>
-          <input type="text" class="form-control" id="validationDefault02" value="" required>
+          <input type="text" class="form-control" id="documento" formControlName="documento" required>
         </div>
         <div class="col-md-6">
           <label for="validationDefault02" class="form-label">Celular</label>
-          <input type="text" class="form-control" id="validationDefault02" value="" required>
+          <input type="text" class="form-control" id="celular" formControlName="celular" required>
         </div>
         <div class="col-md-12">
           <label for="validationDefault02" class="form-label">Dirección</label>
-          <input type="text" class="form-control" id="validationDefault02" value="" required>
+          <input type="text" class="form-control" id="direccion" formControlName="direccion" required>
         </div>
+
+        <div class="mb-3">
+          <label for="formFileMultiple" class="form-label">Imagen de documento</label>
+          <input class="form-control" type="file" id="formFileMultiple" multiple>
+        </div>
+<!--  
         <div>
-            <button class="btn btn-warning text-center justify-content-center" (click)="registrarCliente()">Guardar ubicación</button>
+            <button class="btn btn-warning text-center justify-content-center" (click)="registrarCliente()" >Guardar ubicación</button>
           </div>       
           <div class="mb-3">
             <label for="formFile" class="form-label">Imagen del documento</label>
             <input class="form-control" type="file" id="formFile">
           </div>
+-->
         <div class="col-12">
-          <button class="btn btn-success" type="submit">Agregar</button>
+          <button class="btn btn-success" type="submit" [disabled]="!clienteForm.valid">Agregar</button>
         </div>
       </form>
        <!-- fin -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>

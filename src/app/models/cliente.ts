@@ -6,3 +6,10 @@ export interface Cliente {
     direccion: string;
     prestamos: any[];
 }
+
+export interface ResponseData {
+    status: string;
+    data: Cliente[];
+    error?: any;
+}
+

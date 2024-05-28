@@ -1,0 +1,120 @@
+<div class="container mb-4">
+  <div>
+    <div class="m-3">
+      <h2 class="text-center">Prestamos</h2>
+    </div>
+
+    <div>
+      <form class="row g-3" [formGroup]="prestamoForm" >
+        <div class="col-md-3">
+          <label for="validationDefault01" class="form-label"
+            >Importe crédito</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="credito"
+            formControlName="credito"
+            required
+          />
+        </div>
+        <div class="col-md-3 modalidad">
+          <select class="form-select" aria-label="Default select example">
+            <option selected>Modalidad</option>
+            <option value="1">Semanal</option>
+            <option value="2">Quincenal</option>
+            <option value="3">Mensual</option>
+            <option value="3">Anual</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+            <label for="validationDefault02" class="form-label"
+              >Número de Cuotas</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="celular"
+              formControlName="numCuotas"
+              required
+            />
+          </div>
+        <div class="col-md-2">
+          <label for="validationDefault02" class="form-label"
+            >Tasa de interés</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="documento"
+            formControlName="interes"
+            required
+          />
+        </div>
+       
+        <div class="col-md-2">
+          <label for="validationDefault02" class="form-label"
+            >Importe de cuota</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="direccion"
+            value="{{cuotaPago}}"
+            required
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="validationDefault02" class="form-label"
+            >Total a pagar</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="direccion"
+            value="{{totalPagar}}"
+            required
+          />
+        </div>
+        <div class="col-md-4 fech">
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" class="form-control" id="fecha" name="fecha" [value]="fechaActual.toISOString().substring(0, 10)">
+              </div>
+        </div>
+        <div class="col-md-4">
+            <label for="validationDefault02" class="form-label"
+              >Interés generado</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="direccion"
+              value="{{interesGanado}}"
+              required
+            />
+          </div>
+
+
+        <div class="col-12 text-center mt-4 d-flex">
+          <button class="btn btn-danger m-1" type="submit">
+            <i class="fa-solid fa-trash"></i>
+            Limpiar
+          </button>
+          <button class="btn btn-success m-1" type="submit">
+            <i class="fa-solid fa-floppy-disk"></i>
+            Guardar prestamo
+          </button>
+          <button class="btn btn-info m-1" (click)="calculoCuota()">
+            <i class="fa-solid fa-calculator"></i>
+            Calcular
+          </button>
+                   <button class="btn btn-info m-1" (click)="calculoCuota()">
+            <i class="fa-solid fa-calculator"></i>
+            Calcular
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
