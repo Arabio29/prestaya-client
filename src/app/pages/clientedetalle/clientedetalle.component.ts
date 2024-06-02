@@ -5,37 +5,55 @@ import { Cliente, ResponseData } from '../../models/cliente';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingComponent } from '../../components/loading/loading.component';
 import { PrestamosComponent } from '../../components/prestamos/prestamos.component';
-import { RespData } from '../../models/Responses';
+import { RespData, Prestamos } from '../../models/Responses';
 import { AlertServiceService } from '../../services/alert.service.service';
+import {ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-clientedetalle',
   standalone: true,
-  imports: [NavbarComponent, LoadingComponent, PrestamosComponent],
+  imports: [NavbarComponent, LoadingComponent, PrestamosComponent, ReactiveFormsModule],
   templateUrl: './clientedetalle.component.html',
   styleUrl: './clientedetalle.component.css',
 })
 export class ClientedetalleComponent implements OnInit {
   loading: boolean = true;
-
+  public prestamo?: Prestamos[];
   public cliente?: Cliente;
+  clienteForm: FormGroup;
+  RespData: any;
 
   constructor(
     private clienteService: ClienteService,
     private _route: ActivatedRoute,
     private _ruta: Router,
-    private alertService: AlertServiceService
+    private alertService: AlertServiceService,
+    private form: FormBuilder
   ) {
     this._route = _route;
     this._ruta = _ruta;
+    this.clienteForm = this.form.group({
+      nombre: ['', Validators.required],
+      cedula: ['', Validators.required],
+      celular: ['', Validators.required],
+      direccion: ['', Validators.required],
+      id: ['', Validators.required]
+    });
   }
 
   ngOnInit(): void {
     this._route.params.subscribe((params) => {
       this.clienteService.getClientById(params['id']).subscribe((resp) => {
         this.cliente = resp.data;
+        this.prestamo = this.cliente?.prestamos;  
 
-        console.log(this.cliente);
+        this.clienteForm.setValue({
+          id: this.cliente?.id,
+          nombre: this.cliente?.nombre,
+          cedula: this.cliente?.cedula,
+          celular: this.cliente?.celular,
+          direccion: this.cliente?.direccion   
+        });  
 
         this.loading = false;
       });
@@ -44,7 +62,6 @@ export class ClientedetalleComponent implements OnInit {
 
   naviga() {
     this._ruta.navigate(['/clientes']);
-    console.log('navegando');
   }
 
   confirmDelete(): void {
@@ -69,11 +86,19 @@ export class ClientedetalleComponent implements OnInit {
     }
   }
 
-  /*   updateClient(){
-    this.clienteService.updateClient(this.cliente).subscribe(resp => {
-      console.log(resp);
-      this.naviga();
-    });
+  updateClient(): void {
+    const client = this.clienteForm.value;
+    if (client) {
+      this.clienteService.updateClient(client).subscribe((resp: any) => {
+        console.log(resp);
+        if (resp.status == 'OK') {
+          this.alertService.success('Cliente actualizado');
+        }
+      });
+    } else {
+      this.alertService.error('No se pudo actualizar el cliente');
+    }
   }
- */
+  
+  
 }

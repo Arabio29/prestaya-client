@@ -1,15 +1,36 @@
-<app-navbar/>
+<app-navbar />
+<nav>
+  <div class="container py-4 justify-content-center align-items-center">
+    <form class="d-flex" role="search">
+      <input
+        class="form-control me-2"
+        type="search"
+        placeholder="Documento o nombre"
+        aria-label="Search"
+      />
+      <button class="btn btn-outline-success" type="submit">Buscar</button>
+    </form>
+  </div>
+</nav>
 
-<div class="container d-flex justify-content-end">
+<div class="container d-flex justify-content-end mb-2">
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLabel">
+  <button
+    type="button"
+    class="btn btn-primary"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModalLabel"
+  >
     <i class="fa-solid fa-plus"></i>
     Agregar cliente
   </button>
 </div>
 
 <div class="container">
-    <table class="table table-striped table-hover">
+
+  <div class="table-responsive">
+    <!-- <table class="table table-striped table-hover table-bordered"></table> -->
+    <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
           <th scope="col">#</th>
@@ -25,9 +46,14 @@
           <td>{{ cliente.id }}</td>
           <td>{{ cliente.cedula }}</td>
           <td>{{ cliente.nombre }}</td>
-         <!--  <td>{{ cliente.celular }}</td> -->
+          <!--  <td>{{ cliente.celular }}</td> -->
           <td>
-            <button class="btn btn-outline-primary" (click)="navegate(cliente.id)">Detalles</button>
+            <button
+              class="btn btn-outline-primary"
+              (click)="navegate(cliente.id)"
+            >
+              Detalles
+            </button>
           </td>
         </tr>
         }@empty {
@@ -36,44 +62,93 @@
         </tr>
         }
       </tbody>
-    </table>
+    </table> 
   </div>
-
-
+</div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalLabel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModalLabel"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar nuevo cliente</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Agregar nuevo cliente
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
-       <!-- ini contenido modal -->
-       <form class="row g-3" [formGroup]="clienteForm" (ngSubmit)="enviar()">
-        <div class="col-md-12">
-          <label for="validationDefault01" class="form-label">Nombre completo</label>
-          <input type="text" class="form-control" id="documento" formControlName="nombre" required>
-        </div>
-        <div class="col-md-6">
-          <label for="validationDefault02" class="form-label">Documento</label>
-          <input type="text" class="form-control" id="documento" formControlName="documento" required>
-        </div>
-        <div class="col-md-6">
-          <label for="validationDefault02" class="form-label">Celular</label>
-          <input type="text" class="form-control" id="celular" formControlName="celular" required>
-        </div>
-        <div class="col-md-12">
-          <label for="validationDefault02" class="form-label">Dirección</label>
-          <input type="text" class="form-control" id="direccion" formControlName="direccion" required>
-        </div>
+        <!-- ini contenido modal -->
+        <form class="row g-3" [formGroup]="clienteForm" (ngSubmit)="enviar()">
+          <div class="col-md-12">
+            <label for="validationDefault01" class="form-label"
+              >Nombre completo</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="documento"
+              formControlName="nombre"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="validationDefault02" class="form-label"
+              >Documento</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="documento"
+              formControlName="documento"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="validationDefault02" class="form-label">Celular</label>
+            <input
+              type="text"
+              class="form-control"
+              id="celular"
+              formControlName="celular"
+              required
+            />
+          </div>
+          <div class="col-md-12">
+            <label for="validationDefault02" class="form-label"
+              >Dirección</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="direccion"
+              formControlName="direccion"
+              required
+            />
+          </div>
 
-        <div class="mb-3">
-          <label for="formFileMultiple" class="form-label">Imagen de documento</label>
-          <input class="form-control" type="file" id="formFileMultiple" multiple>
-        </div>
-<!--  
+          <div class="mb-3">
+            <label for="formFileMultiple" class="form-label"
+              >Imagen de documento</label
+            >
+            <input
+              class="form-control"
+              type="file"
+              id="formFileMultiple"
+              multiple
+            />
+          </div>
+          <!--  
         <div>
             <button class="btn btn-warning text-center justify-content-center" (click)="registrarCliente()" >Guardar ubicación</button>
           </div>       
@@ -82,14 +157,22 @@
             <input class="form-control" type="file" id="formFile">
           </div>
 -->
-        <div class="col-12">
-          <button class="btn btn-success" type="submit" [disabled]="!clienteForm.valid">Agregar</button>
-        </div>
-      </form>
-       <!-- fin -->
+          <div class="col-12">
+            <button
+              class="btn btn-success"
+              type="submit"
+              [disabled]="!clienteForm.valid"
+            >
+              Agregar
+            </button>
+          </div>
+        </form>
+        <!-- fin -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
       </div>
     </div>
   </div>

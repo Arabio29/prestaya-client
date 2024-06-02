@@ -67,7 +67,6 @@ export class ClientesComponent implements OnInit {
   enviar(){
     if (this.clienteForm.valid) {
       const cliente = this.clienteForm.value;
-      console.log(cliente)
        this.clienteService.saveClient(cliente).subscribe(
         response => {
           this.alertService.success('Cliente registrado exitosamente');

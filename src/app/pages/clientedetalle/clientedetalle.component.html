@@ -12,13 +12,17 @@
       </button>
     </div>
     <div>
-      <button class="btn btn-success m-1">
+      <button
+        class="btn btn-success m-1"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModalLabel"
+      >
         <i class="fa-solid fa-coins"></i>
         Agregar Prestamo
       </button>
     </div>
     <div>
-      <button class="btn btn-primary m-1">
+      <button class="btn btn-primary m-1" (click)="updateClient()">
         <i class="fa-solid fa-pen"></i>
         Actualizar
       </button>
@@ -30,54 +34,61 @@
       </button>
     </div>
   </div>
-  <form class="row g-3">
-    <div class="col-md-6">
-      <label for="validationDefault01" class="form-label"
-        >Nombre completo</label
-      >
-      <input
-        type="text"
-        class="form-control"
-        value="{{ cliente?.nombre }}"
-        id="documento"
-        formControlName="nombre"
-        required
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="validationDefault02" class="form-label">Documento</label>
-      <input
-        type="text"
-        class="form-control"
-        id="documento"
-        formControlName="documento"
-        value="{{ cliente?.cedula }}"
-        required
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="validationDefault02" class="form-label">Celular</label>
-      <input
-        type="text"
-        class="form-control"
-        id="celular"
-        formControlName="celular"
-        value="{{ cliente?.celular }}"
-        required
-      />
-    </div>
-    <div class="col-md-6">
-      <label for="validationDefault02" class="form-label">Dirección</label>
-      <input
-        type="text"
-        class="form-control"
-        id="direccion"
-        formControlName="direccion"
-        value="{{ cliente?.direccion }}"
-        required
-      />
-    </div>
-  </form>
-  <app-prestamos/>
+  <div class="border p-3 mt-2">
+    <form class="row g-3" [formGroup]="clienteForm">
+      <div class="col-md-6">
+        <label for="validationDefault01" class="form-label"
+          ><strong>Nombre completo</strong></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="documento"
+          formControlName="nombre"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="validationDefault02" class="form-label"
+          ><strong>Documento</strong></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="cedula"
+          formControlName="cedula"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="validationDefault02" class="form-label"
+          ><strong>Celular</strong></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="celular"
+          formControlName="celular"
+          required
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="validationDefault02" class="form-label"
+          ><strong>Dirección</strong></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="direccion"
+          formControlName="direccion"
+          required
+        />
+      </div>
+    </form>
+  </div>
+  <!-- fin contenido modal -->
+
+  <!-- inicio prestamos -->
+  <app-prestamos [prestamos]="prestamo"></app-prestamos>
 </div>
 }
