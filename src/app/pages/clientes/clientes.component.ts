@@ -20,8 +20,7 @@ export class ClientesComponent implements OnInit {
   clientes: Cliente[] = [];
   errorMessage: string = '';
   client: any = {};
-  ubicacion: any = {};
-  
+  ubicacion: any = {}; 
 
   clienteForm: FormGroup
 

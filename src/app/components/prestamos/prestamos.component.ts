@@ -56,6 +56,36 @@ export class PrestamosComponent implements OnInit {
     console.log(this.cuotaPago);
     console.log(this.prestamoForm.value);
   }
+
+  prestamos = [
+    {
+      id: 1, 
+      monto: 10000.0,
+      modalidad: 'Mensual',
+      cuotas: 12,
+      tasaInteres: 0.05,
+      cuotaPagar: 950.0,
+      totalPagar: 11400.0,
+      fechaInicio: new Date('2024-05-30T00:00:00Z'),
+      interesGenerado: 1400.0,
+      clienteId: 1,
+      estado: 'Activo'
+    },
+    { 
+      id: 2,
+      monto: 15000.0,
+      modalidad: 'Trimestral',
+      cuotas: 6,
+      tasaInteres: 0.06,
+      cuotaPagar: 2700.0,
+      totalPagar: 16200.0,
+      fechaInicio: new Date('2024-06-15T00:00:00Z'),
+      interesGenerado: 1200.0,
+      clienteId: 2,
+      estado: 'Activo'
+    }
+    // Puedes agregar más objetos según sea necesario
+  ];
 }
 
 
