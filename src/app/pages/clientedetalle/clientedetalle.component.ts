@@ -8,11 +8,12 @@ import { PrestamosComponent } from '../../components/prestamos/prestamos.compone
 import { RespData, Prestamos } from '../../models/Responses';
 import { AlertServiceService } from '../../services/alert.service.service';
 import {ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-clientedetalle',
   standalone: true,
-  imports: [NavbarComponent, LoadingComponent, PrestamosComponent, ReactiveFormsModule],
+  imports: [NavbarComponent, LoadingComponent, PrestamosComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './clientedetalle.component.html',
   styleUrl: './clientedetalle.component.css',
 })
@@ -33,10 +34,10 @@ export class ClientedetalleComponent implements OnInit {
     this._route = _route;
     this._ruta = _ruta;
     this.clienteForm = this.form.group({
-      nombre: ['', Validators.required],
-      cedula: ['', Validators.required],
-      celular: ['', Validators.required],
-      direccion: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.minLength(3)]],
+      cedula: ['', [Validators.required, Validators.minLength(7)]],
+      celular: ['', [Validators.required, Validators.minLength(7)]],
+      direccion: ['', [Validators.required, Validators.minLength(4)]],
       id: ['', Validators.required]
     });
   }
@@ -64,6 +65,10 @@ export class ClientedetalleComponent implements OnInit {
     this._ruta.navigate(['/clientes']);
   }
 
+  hasErrors(controlName: string, errorType: string) {
+    return this.clienteForm.get(controlName)?.hasError(errorType) && this.clienteForm.get(controlName)?.touched;
+  }
+
   confirmDelete(): void {
     this.alertService.warningDelete().then((result) => {
       if (result.isConfirmed) {
@@ -87,8 +92,8 @@ export class ClientedetalleComponent implements OnInit {
   }
 
   updateClient(): void {
-    const client = this.clienteForm.value;
-    if (client) {
+    if (this.clienteForm.valid) {
+      const client = this.clienteForm.value;
       this.clienteService.updateClient(client).subscribe((resp: any) => {
         console.log(resp);
         if (resp.status == 'OK') {
@@ -96,7 +101,7 @@ export class ClientedetalleComponent implements OnInit {
         }
       });
     } else {
-      this.alertService.error('No se pudo actualizar el cliente');
+      this.alertService.error('Por favor, complete correctamente el formulario');
     }
   }
   
