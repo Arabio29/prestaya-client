@@ -35,9 +35,9 @@ export class ClientedetalleComponent implements OnInit {
     this._ruta = _ruta;
     this.clienteForm = this.form.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
-      cedula: ['', [Validators.required, Validators.minLength(7)]],
+      cedula: [''],
       celular: ['', [Validators.required, Validators.minLength(7)]],
-      direccion: ['', [Validators.required, Validators.minLength(4)]],
+      direccion: [''],
       id: ['', Validators.required]
     });
   }

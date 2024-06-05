@@ -7,15 +7,14 @@
       <div class="d-flex aling-items-center justify-content-center">
         <div class="d-flex aling-items-center p-4">
           <button
-          class="btn btn-success"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModalLabel"
-        >
-          <i class="fa-solid fa-coins"></i>
-          Agregar Prestamo
-        </button>
+            class="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalLabel"
+          >
+            <i class="fa-solid fa-coins"></i>
+            Agregar Prestamo
+          </button>
         </div>
-
       </div>
     </div>
 
@@ -33,7 +32,8 @@
               <th scope="col">Total</th>
               <th scope="col">Ganancia</th>
               <th scope="col">Estado</th>
-              <th scope="col">Opciones</th>
+              <th scope="col">Abonar</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody class="table-group-divider">
@@ -47,6 +47,7 @@
               <td>{{ prestamo.cuotaPagar }}</td>
               <td>{{ prestamo.totalPagar }}</td>
               <td>{{ prestamo.interesGenerado }}</td>
+              <td>Cancelado</td>
               <td>
                 <button
                   class="btn btn-outline-success"
@@ -58,9 +59,19 @@
                 </button>
               </td>
               <td>
+                <button
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#detallePrestamoModalLabel"
+                >
+                  <i class="fa-solid fa-list"></i>
+                  Detalles
+                </button>
+              </td>
+              <!-- <td>
                 <div class="d-flex justify-content-evenly">
                   <div class="">
-                    <button class="btn btn-info">
+                    <button class="btn btn-primary">
                       <i class="fa-solid fa-pen"></i>
                     </button>
                   </div>
@@ -70,7 +81,7 @@
                     </button>
                   </div>
                 </div>
-              </td>
+              </td> -->
             </tr>
             }@empty {
             <tr>
@@ -121,14 +132,20 @@
             />
           </div>
           <div class="col-md-4 modalidad">
-            <select class="form-select" aria-label="Default select example">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              (change)="onChangeModalidad($event)"
+            >
               <option selected>Modalidad</option>
+              <option value="5">Diario</option>
               <option value="1">Semanal</option>
               <option value="2">Quincenal</option>
               <option value="3">Mensual</option>
-              <option value="3">Anual</option>
+              <option value="4">Anual</option>
             </select>
           </div>
+
           <div class="col-md-4">
             <label for="validationDefault02" class="form-label"
               >Número de Cuotas</label
@@ -143,38 +160,13 @@
           </div>
           <div class="col-md-4">
             <label for="validationDefault02" class="form-label"
-              >Tasa de interés</label
+              >Tasa de interés %</label
             >
             <input
               type="number"
               class="form-control"
               id="documento"
               formControlName="interes"
-              required
-            />
-          </div>
-
-          <div class="col-md-4">
-            <label for="validationDefault02" class="form-label"
-              >Importe de cuota</label
-            >
-            <input
-              type="number"
-              class="form-control"
-              id="direccion"
-              value="{{ cuotaPago }}"
-              required
-            />
-          </div>
-          <div class="col-md-4">
-            <label for="validationDefault02" class="form-label"
-              >Total a pagar</label
-            >
-            <input
-              type="number"
-              class="form-control"
-              id="direccion"
-              value="{{ totalPagar }}"
               required
             />
           </div>
@@ -186,9 +178,34 @@
                 class="form-control"
                 id="fecha"
                 name="fecha"
-                [value]="fechaActual.toISOString().substring(0, 10)"
+                formControlName="fecha"
               />
             </div>
+          </div>
+
+          <div class="col-md-4">
+            <label for="validationDefault02" class="form-label"
+              >Importe de cuota</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="direccion"
+              value="{{ cuotaPago }}"
+              disabled
+            />
+          </div>
+          <div class="col-md-4">
+            <label for="validationDefault02" class="form-label"
+              >Total a pagar</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="direccion"
+              value="{{ totalPagar }}"
+              disabled
+            />
           </div>
           <div class="col-md-4">
             <label for="validationDefault02" class="form-label"
@@ -199,7 +216,7 @@
               class="form-control"
               id="direccion"
               value="{{ interesGanado }}"
-              required
+              disabled
             />
           </div>
 
@@ -214,11 +231,7 @@
               <i class="fa-solid fa-floppy-disk"></i>
               Guardar prestamo
             </button>
-            <button class="btn btn-info m-1" (click)="calculoCuota()">
-              <i class="fa-solid fa-eye"></i>
-              Ver prestamos
-            </button>
-            <button class="btn btn-warning m-1" (click)="calculoCuota()">
+            <button class="btn btn-primary m-1" (click)="calculoCuota()">
               <i class="fa-solid fa-calculator"></i>
               Calcular
             </button>
@@ -286,6 +299,111 @@
             </button>
           </div>
         </form>
+        <!-- fin -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  #detallePrestamoModal
+  class="modal fade"
+  id="detallePrestamoModalLabel"
+  tabindex="-1"
+  aria-labelledby="detallePrestamoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="detallePrestamoModalLabel">Nro. Prestamo 1</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- ini contenido modal -->
+        <div class="row">
+          <div class="col-6">
+            <div>
+              <label for="nombreCliente">Monto prestamo:</label>
+              <input type="text" class="form-control p-2" value="cuotaPago" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <label for="nombreCliente">Forma de pago:</label>
+              <input type="text" class="form-control p-2" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <label for="nombreCliente">Intereses:</label>
+              <input type="text" class="form-control p-2" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <label for="nombreCliente">Número de cuotas:</label>
+              <input type="text" class="form-control p-2" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <label for="nombreCliente">Pago total:</label>
+              <input type="text" class="form-control p-2" disabled />
+            </div>
+          </div>
+          <div class="col-6">
+            <div>
+              <label for="nombreCliente">Nombre del cliente:</label>
+              <input type="text" class="form-control p-2" disabled />
+            </div>
+          </div>
+          <div class="table-responsive-lg mt-4">
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Nro. Cuota</th>
+                  <th scope="col">Fecha de pago</th>
+                  <th scope="col">Monto</th>
+                  <th scope="col">Estado</th>       
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                @for (prestamo of prestamos; track $index) {
+                <tr>
+                  <td>{{ prestamo.id }}</td>
+                  <td>{{ prestamo.monto }}</td>
+                  <td>{{ prestamo.modalidad }}</td>
+                  <td>{{ prestamo.cuotas }}</td>
+                </tr>
+                }@empty {
+                <tr>
+                  <td colspan="4">No hay prestamos por mostrar</td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button
+              type="button"
+              class="btn btn-primary mt-3"
+              (click)="imprimirContenidoModal()"
+            >
+              Imprimir
+            </button>
+          </div>
+        </div>
         <!-- fin -->
       </div>
       <div class="modal-footer">

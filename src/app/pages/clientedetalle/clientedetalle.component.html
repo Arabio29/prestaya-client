@@ -11,8 +11,6 @@
         Regresar
       </button>
     </div>
-
-    <div></div>
   </div>
   <div class="border p-3 mt-2">
     <div class="d-flex justify-content-between">
@@ -68,19 +66,7 @@
             class="form-control"
             id="cedula"
             formControlName="cedula"
-            [ngClass]="
-              { 'is-invalid': hasErrors('cedula', 'required') } || {
-                'is-invalid': hasErrors('cedula', 'minlength')
-              }
-            "
-            required
           />
-          <div class="text-danger" *ngIf="hasErrors('cedula', 'required')">
-            Campo requerido
-          </div>
-          <div class="text-danger" *ngIf="hasErrors('nombre', 'minlength')">
-            El documento debe tener al menos 7 caracteres
-          </div>
         </div>
         <div class="col-md-6">
           <label for="validationDefault02" class="form-label"
@@ -114,19 +100,7 @@
             class="form-control"
             id="direccion"
             formControlName="direccion"
-            [ngClass]="
-              { 'is-invalid': hasErrors('direccion', 'required') } || {
-                'is-invalid': hasErrors('direccion', 'minlength')
-              }
-            "
-            required
-          />
-          <div class="text-danger" *ngIf="hasErrors('direccion', 'required')">
-            Campo requerido
-          </div>
-          <div class="text-danger" *ngIf="hasErrors('direccion', 'minlength')">
-            La dirección debe tener al menos 4 caracteres
-          </div>
+          /> 
         </div>
       </form>
     </div>
@@ -135,5 +109,77 @@
 
   <!-- inicio prestamos -->
   <app-prestamos [prestamos]="prestamo"></app-prestamos>
+  <div>
+    <form class="row g-3" [formGroup]="clienteForm">
+      <div class="col-md-6">
+        <label for="validationDefault01" class="form-label"
+          ><strong>Nombre completo</strong></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="documento"
+          formControlName="nombre"
+          [ngClass]="
+            { 'is-invalid': hasErrors('nombre', 'required') } || {
+              'is-invalid': hasErrors('nombre', 'minlength')
+            }
+          "
+          required
+        />
+        <div class="text-danger" *ngIf="hasErrors('nombre', 'required')">
+          Campo requerido
+        </div>
+        <div class="text-danger" *ngIf="hasErrors('nombre', 'minlength')">
+          El nombre debe tener al menos 3 caracteres
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="validationDefault02" class="form-label"
+          ><strong>Documento</strong></label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="cedula"
+          formControlName="cedula"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="validationDefault02" class="form-label"
+          ><strong>Celular</strong></label
+        >
+        <input
+          type="number"
+          class="form-control"
+          id="celular"
+          formControlName="celular"
+          [ngClass]="
+            { 'is-invalid': hasErrors('celular', 'required') } || {
+              'is-invalid': hasErrors('celular', 'minlength')
+            }
+          "
+          required
+        />
+        <div class="text-danger" *ngIf="hasErrors('celular', 'required')">
+          Campo requerido
+        </div>
+        <div class="text-danger" *ngIf="hasErrors('celular', 'minlength')">
+          El celular debe tener al menos 7 caracteres
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="validationDefault02" class="form-label"
+          ><strong>Dirección</strong></label
+        >
+        <input
+          type="text"
+          class="form-control"
+          id="direccion"
+          formControlName="direccion"
+        />
+      </div>
+    </form>
+  </div>
 </div>
 }
