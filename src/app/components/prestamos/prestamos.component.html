@@ -1,3 +1,4 @@
+
 <div class="container mt-2 border">
   <div class="">
     <div class="d-flex justify-content-between">
@@ -132,12 +133,8 @@
             />
           </div>
           <div class="col-md-4 modalidad">
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              (change)="onChangeModalidad($event)"
-            >
-              <option selected>Modalidad</option>
+            <select class="form-select" aria-label="Default select example" formControlName="modalidad">
+              <option value="" selected>Modalidad</option>
               <option value="5">Diario</option>
               <option value="1">Semanal</option>
               <option value="2">Quincenal</option>
@@ -227,7 +224,7 @@
               <i class="fa-solid fa-trash"></i>
               Limpiar
             </button>
-            <button class="btn btn-success m-1" type="submit">
+            <button class="btn btn-success m-1" type="submit" (click)="savePrestamo()">
               <i class="fa-solid fa-floppy-disk"></i>
               Guardar prestamo
             </button>

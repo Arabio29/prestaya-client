@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild } from '@angular/core';
 import {ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 import { AlertServiceService } from '../../services/alert.service.service';
+import { PrestamoService } from '../../services/prestamos.service';
 import { RespData, Prestamos } from '../../models/Responses';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
@@ -33,16 +34,16 @@ onChangeFecha(): void {
   @Input() prestamos?: Prestamos[];
   @ViewChild('detallePrestamoModal') detallePrestamoModal!: ElementRef;
 
-  constructor(private form: FormBuilder, private alertService: AlertServiceService, private renderer: Renderer2) {
+  constructor(private form: FormBuilder, private alertService: AlertServiceService, private renderer: Renderer2, private prestamoService : PrestamoService) {
     this.fechaActual = new Date();
     this.fechaSeleccionada = new Date();
     this.prestamoForm = this.form.group({
       credito: ['', Validators.required],
       numCuotas: ['', Validators.required],
       interes: ['', Validators.required],
-      fecha: ['']
+      fecha: [''],
+      modalidad: ['']
     });
-
   }
 
   ngOnInit(): void {
@@ -70,19 +71,22 @@ onChangeFecha(): void {
         this.calcularFechasCuotas();
   }
 
-  calcularFechasCuotas(): void {
-    const modalidadSeleccionada = this.prestamoForm.value.modalidad;
-    const incremento = this.obtenerIncrementoModalidad(modalidadSeleccionada);
-    this.fechasCuotas = [];
-    let fecha = new Date(this.fechaSeleccionada); // Utilizar fechaSeleccionada en lugar de fechaActual
-    for (let i = 0; i < this.numCuotas; i++) {
-      let nuevaFecha = new Date(fecha); // Crear una nueva instancia de Date en cada iteración
-      nuevaFecha.setDate(nuevaFecha.getDate() + incremento * i); // Añadir incremento de días
-      this.fechasCuotas.push(nuevaFecha); // Agregar fecha al array de fechas de cuotas
-    }
-    console.log(this.fechasCuotas);
+calcularFechasCuotas(): void {
+  this.fechasCuotas = [];
+  const modalidadSeleccionada = this.prestamoForm.value.modalidad;
+  const incrementoDias = this.obtenerIncrementoModalidad(modalidadSeleccionada);
+  const fechaInicialString = this.prestamoForm.value.fecha;
+  const fechaInicial = new Date(fechaInicialString);
+
+  for (let i = 0; i < this.prestamoForm.value.numCuotas; i++) {
+    let nuevaFecha = new Date(fechaInicial);
+    nuevaFecha.setDate(nuevaFecha.getDate() + (incrementoDias * (i + 1)));
+    this.fechasCuotas.push(nuevaFecha);
   }
-  
+
+  console.log('modalidadSeleccionada:', modalidadSeleccionada);
+  console.log(this.fechasCuotas);
+}
 
   obtenerIncrementoModalidad(modalidad: number): number {
     switch (modalidad) {
@@ -131,6 +135,27 @@ onChangeFecha(): void {
     ventanaImpresion?.document.close();
     ventanaImpresion?.print();
   }
+
+
+  savePrestamo(){
+    if (this.prestamoForm.valid) {
+      const prestamo = this.prestamoForm.value;
+      this.prestamoService.registrarPrestamo(prestamo).subscribe(
+        response => {
+          this.alertService.success('Prestamo registrado exitosamente');
+        },
+        error => {
+          this.alertService.error('Error al registrar el prestamo');
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    } 
+
+
+  }
+
+
 //add
 }
 
