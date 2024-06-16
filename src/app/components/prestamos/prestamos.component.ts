@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild } from '@angular/core';
-import {ReactiveFormsModule, FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertServiceService } from '../../services/alert.service.service';
 import { PrestamoService } from '../../services/prestamos.service';
-import { RespData, Prestamos } from '../../models/Responses';
+import { RespData, Prestamos, Cliente } from '../../models/Responses';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 
@@ -25,13 +25,15 @@ export class PrestamosComponent implements OnInit {
   fechaActual = new Date();
   fechasCuotas: Date[] = [];
   fechaSeleccionada: Date;
+  dataPrestamos: any[] = [];
 
 onChangeFecha(): void {
   this.calcularFechasCuotas();
 }
 
-
   @Input() prestamos?: Prestamos[];
+  @Input() cliente?: Cliente;
+
   @ViewChild('detallePrestamoModal') detallePrestamoModal!: ElementRef;
 
   constructor(private form: FormBuilder, private alertService: AlertServiceService, private renderer: Renderer2, private prestamoService : PrestamoService) {
@@ -54,6 +56,8 @@ onChangeFecha(): void {
         console.log('Fecha seleccionada:', this.fechaSeleccionada);
       });
     }
+
+    console.log(this.cliente)
   }
  
   calculoCuota(): void {
@@ -70,6 +74,9 @@ onChangeFecha(): void {
         // Calcular fechas de cuotas
         this.calcularFechasCuotas();
   }
+
+
+
 
 calcularFechasCuotas(): void {
   this.fechasCuotas = [];
@@ -139,8 +146,22 @@ calcularFechasCuotas(): void {
 
   savePrestamo(){
     if (this.prestamoForm.valid) {
-      const prestamo = this.prestamoForm.value;
-      this.prestamoService.registrarPrestamo(prestamo).subscribe(
+
+      const dataPrestamos = {
+        credito: this.prestamoForm.value.credito,
+        modalidad: this.prestamoForm.value.modalidad,
+        numCuotas: this.prestamoForm.value.numCuotas,
+        interes: this.prestamoForm.value.interes,
+        fecha: this.prestamoForm.value.fecha,
+        cuotaPago: this.cuotaPago,
+        totalPagar: this.totalPagar,
+        interesGanado: this.interesGanado,
+        fechaActual: this.fechaActual,
+        fechasCuotas: this.fechasCuotas,
+        clienteId: this.cliente?.id 
+      };
+
+      this.prestamoService.registrarPrestamo(dataPrestamos).subscribe(
         response => {
           this.alertService.success('Prestamo registrado exitosamente');
         },
@@ -150,7 +171,7 @@ calcularFechasCuotas(): void {
       );
     } else {
       console.error('Formulario inválido');
-    } 
+    }
 
 
   }

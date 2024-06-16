@@ -12,9 +12,14 @@ export class PrestamoService {
     private _http = inject(HttpClient);
     private apiUrl: string = 'http://localhost:8080/api';
 
-  registrarPrestamo(prestamo: any): Observable<any> {
-    const url = `${this.apiUrl}/registrar`;
-    return this._http.post(url, prestamo);
+    registrarPrestamo(dataPrestamos: any): Observable<any> {
+      const url = `${this.apiUrl}/prestamo`;
+      const headers = {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      };
+      return this._http.post(url, dataPrestamos, headers);
   }
 
 

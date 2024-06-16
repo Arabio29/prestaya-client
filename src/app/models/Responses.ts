@@ -15,3 +15,11 @@ export interface Prestamos {
     fechaInicio:     Date;
     interesGenerado: number;
 }
+export interface Cliente {
+    id:        number;
+    cedula:    number;
+    nombre:    string;
+    celular:   number;
+    direccion: string;
+    prestamos: any[];
+}
