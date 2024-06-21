@@ -14,11 +14,8 @@ export class PrestamoService {
 
     registrarPrestamo(dataPrestamos: any): Observable<any> {
       const url = `${this.apiUrl}/prestamo`;
-      const headers = {
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      };
+      const headers = {headers: {'Content-Type': 'application/json'}};
+      
       return this._http.post(url, dataPrestamos, headers);
   }
 

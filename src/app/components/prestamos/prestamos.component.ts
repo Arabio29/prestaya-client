@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AlertServiceService } from '../../services/alert.service.service';
 import { PrestamoService } from '../../services/prestamos.service';
-import { RespData, Prestamos, Cliente } from '../../models/Responses';
-import { FormsModule } from '@angular/forms';
+import { Prestamos, Cliente } from '../../models/Responses';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 
 @Component({
@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './prestamos.component.html',
-  styleUrl: './prestamos.component.css'
+  styleUrls: ['./prestamos.component.css']
 })
 export class PrestamosComponent implements OnInit {
 
@@ -24,12 +24,8 @@ export class PrestamosComponent implements OnInit {
   cuotaPago: number = 0;
   fechaActual = new Date();
   fechasCuotas: Date[] = [];
-  fechaSeleccionada: Date;
-  dataPrestamos: any[] = [];
-
-onChangeFecha(): void {
-  this.calcularFechasCuotas();
-}
+  fechaSeleccionada: Date = new Date();
+  dataPrestamos: any;
 
   @Input() prestamos?: Prestamos[];
   @Input() cliente?: Cliente;
@@ -37,14 +33,12 @@ onChangeFecha(): void {
   @ViewChild('detallePrestamoModal') detallePrestamoModal!: ElementRef;
 
   constructor(private form: FormBuilder, private alertService: AlertServiceService, private renderer: Renderer2, private prestamoService : PrestamoService) {
-    this.fechaActual = new Date();
-    this.fechaSeleccionada = new Date();
     this.prestamoForm = this.form.group({
       credito: ['', Validators.required],
       numCuotas: ['', Validators.required],
       interes: ['', Validators.required],
-      fecha: [''],
-      modalidad: ['']
+      fecha: ['', Validators.required],
+      modalidad: ['', Validators.required]
     });
   }
 
@@ -57,113 +51,76 @@ onChangeFecha(): void {
       });
     }
 
-    console.log(this.cliente)
+    console.log(this.cliente);
   }
- 
+
   calculoCuota(): void {
     this.credito = this.prestamoForm.value.credito;
     this.numCuotas = this.prestamoForm.value.numCuotas;
     this.interes = this.prestamoForm.value.interes;
-    this.fechaActual = new Date();
 
     let i = this.interes / 100;
     this.interesGanado = this.credito * i;
     this.totalPagar = this.credito + this.interesGanado;
     this.cuotaPago = this.totalPagar / this.numCuotas;
 
-        // Calcular fechas de cuotas
-        this.calcularFechasCuotas();
+    this.calcularFechasCuotas();
   }
 
+  calcularFechasCuotas(): void {
+    this.fechasCuotas = [];
+    const modalidadSeleccionada = this.prestamoForm.value.modalidad;
+    const incrementoDias = this.obtenerIncrementoModalidad(modalidadSeleccionada);
+    const fechaInicialString = this.prestamoForm.value.fecha;
+    const fechaInicial = new Date(fechaInicialString);
 
+    for (let i = 0; i < this.prestamoForm.value.numCuotas; i++) {
+      let nuevaFecha = new Date(fechaInicial);
+      nuevaFecha.setDate(nuevaFecha.getDate() + (incrementoDias * (i + 1)));
+      this.fechasCuotas.push(nuevaFecha);
+    }
 
-
-calcularFechasCuotas(): void {
-  this.fechasCuotas = [];
-  const modalidadSeleccionada = this.prestamoForm.value.modalidad;
-  const incrementoDias = this.obtenerIncrementoModalidad(modalidadSeleccionada);
-  const fechaInicialString = this.prestamoForm.value.fecha;
-  const fechaInicial = new Date(fechaInicialString);
-
-  for (let i = 0; i < this.prestamoForm.value.numCuotas; i++) {
-    let nuevaFecha = new Date(fechaInicial);
-    nuevaFecha.setDate(nuevaFecha.getDate() + (incrementoDias * (i + 1)));
-    this.fechasCuotas.push(nuevaFecha);
+    console.log('modalidadSeleccionada:', modalidadSeleccionada);
+    console.log(this.fechasCuotas);
   }
-
-  console.log('modalidadSeleccionada:', modalidadSeleccionada);
-  console.log(this.fechasCuotas);
-}
 
   obtenerIncrementoModalidad(modalidad: number): number {
     switch (modalidad) {
-      case 1: // Semanal
-        return 7;
-      case 2: // Quincenal
-        return 14;
-      case 3: // Mensual
-        return 30;
-      case 4: // Anual
-        return 365;
-      case 5: // Diario
-        return 1;
-      default:
-        return 0;
+      case 1: return 7; // Semanal
+      case 2: return 14; // Quincenal
+      case 3: return 30; // Mensual
+      case 4: return 365; // Anual
+      case 5: return 1; // Diario
+      default: return 0;
     }
   }
 
-  onChangeModalidad(event: any): void {
-    const modalidadSeleccionada = event.target.value;
-    if (modalidadSeleccionada !== null && modalidadSeleccionada !== undefined) {
-      // Tu lógica aquí
-    }
-    console.log(modalidadSeleccionada);
-    console.log(this.fechaSeleccionada);
-  }
+  savePrestamo() {
+    this.calculoCuota(); // Asegúrate de calcular cuota antes de guardar
 
-  imprimirContenidoModal() {
-    const modalContent = this.detallePrestamoModal.nativeElement.outerHTML;
-  
-    const ventanaImpresion = window.open('', '', 'height=720,width=1280');
-    const bootstrapCSS = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';
-  
-    ventanaImpresion?.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Imprimir Modal</title>
-          <link rel="stylesheet" href="${bootstrapCSS}">
-        </head>
-        <body>
-          ${modalContent}
-        </body>
-      </html>
-    `);
-    ventanaImpresion?.document.close();
-    ventanaImpresion?.print();
-  }
-
-
-  savePrestamo(){
     if (this.prestamoForm.valid) {
-
       const dataPrestamos = {
-        credito: this.prestamoForm.value.credito,
+        monto: this.prestamoForm.value.credito,
         modalidad: this.prestamoForm.value.modalidad,
-        numCuotas: this.prestamoForm.value.numCuotas,
-        interes: this.prestamoForm.value.interes,
-        fecha: this.prestamoForm.value.fecha,
-        cuotaPago: this.cuotaPago,
+        cuotas: this.prestamoForm.value.numCuotas,
+        tasaInteres: this.prestamoForm.value.interes,
+        fechaInicio: this.prestamoForm.value.fecha,
+        cuotaPagar: this.cuotaPago,
         totalPagar: this.totalPagar,
-        interesGanado: this.interesGanado,
+        interesGenerado: this.interesGanado,
         fechaActual: this.fechaActual,
         fechasCuotas: this.fechasCuotas,
-        clienteId: this.cliente?.id 
+        clienteId: this.cliente?.id
       };
 
+      console.log(dataPrestamos);
       this.prestamoService.registrarPrestamo(dataPrestamos).subscribe(
         response => {
-          this.alertService.success('Prestamo registrado exitosamente');
+          if (response && response.status === 'OK') {
+            this.alertService.success('Prestamo registrado exitosamente');
+          } else {
+            this.alertService.error('Error al registrar el prestamo');
+          }
         },
         error => {
           this.alertService.error('Error al registrar el prestamo');
@@ -172,19 +129,5 @@ calcularFechasCuotas(): void {
     } else {
       console.error('Formulario inválido');
     }
-
-
   }
-
-
-//add
 }
-
-
-
-
-
-
-
-
-
