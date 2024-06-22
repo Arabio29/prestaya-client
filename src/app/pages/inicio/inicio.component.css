@@ -1,3 +1,10 @@
 a{
   text-decoration: none;
 }
+
+.hero{
+  height: 80vh;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}

@@ -30,7 +30,7 @@ export class PrestamosComponent implements OnInit {
   @Input() prestamos?: Prestamos[];
   @Input() cliente?: Cliente;
 
-  @ViewChild('detallePrestamoModal') detallePrestamoModal!: ElementRef;
+  @ViewChild('detallePrestamoModal', { static: false }) detallePrestamoModal!: ElementRef;
 
   constructor(private form: FormBuilder, private alertService: AlertServiceService, private renderer: Renderer2, private prestamoService : PrestamoService) {
     this.prestamoForm = this.form.group({
@@ -130,4 +130,37 @@ export class PrestamosComponent implements OnInit {
       console.error('Formulario inválido');
     }
   }
+
+
+  printModalContent() {
+    const printContents = this.detallePrestamoModal.nativeElement.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    const popupWin = window.open('', '_blank', 'width=600,height=600');
+    popupWin?.document.open();
+    popupWin?.document.write(`
+      <html>
+        <head>
+          <title>Imprimir contenido del modal</title>
+          <style>
+            /* Aquí puedes agregar estilos adicionales para la impresión */
+            body { font-family: Arial, sans-serif; }
+            .table { width: 100%; margin-bottom: 1rem; color: #212529; }
+            .table th, .table td { padding: 0.75rem; vertical-align: top; border-top: 1px solid #dee2e6; }
+            .table thead th { vertical-align: bottom; border-bottom: 2px solid #dee2e6; }
+            .table tbody + tbody { border-top: 2px solid #dee2e6; }
+            .table .table { background-color: #fff; }
+          </style>
+        </head>
+        <body onload="window.print();window.close()">
+          ${printContents}
+        </body>
+      </html>
+    `);
+    popupWin?.document.close();
+  }
+
+
+  //add
+
 }

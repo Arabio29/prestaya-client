@@ -109,77 +109,69 @@
 
   <!-- inicio prestamos -->
   <app-prestamos [prestamos]="prestamo" [cliente]="cliente" ></app-prestamos>
-  <div>
-    <form class="row g-3" [formGroup]="clienteForm">
-      <div class="col-md-6">
-        <label for="validationDefault01" class="form-label"
-          ><strong>Nombre completo</strong></label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="documento"
-          formControlName="nombre"
-          [ngClass]="
-            { 'is-invalid': hasErrors('nombre', 'required') } || {
-              'is-invalid': hasErrors('nombre', 'minlength')
-            }
-          "
-          required
-        />
-        <div class="text-danger" *ngIf="hasErrors('nombre', 'required')">
-          Campo requerido
-        </div>
-        <div class="text-danger" *ngIf="hasErrors('nombre', 'minlength')">
-          El nombre debe tener al menos 3 caracteres
+
+  <div class="border p-3 mt-2">
+    <div class="d-flex justify-content-between">
+      <div>
+        <h3 class="text-center">Fiadores</h3>
+      </div>
+      <div class="d-flex mb-3">
+        <div>
+          <button class="btn btn-primary m-1" (click)="updateClient()" [disabled]="clienteForm.invalid">
+            <i class="fa-solid fa-pen"></i>
+            Actualizar
+          </button>
         </div>
       </div>
-      <div class="col-md-6">
-        <label for="validationDefault02" class="form-label"
-          ><strong>Documento</strong></label
-        >
-        <input
-          type="number"
-          class="form-control"
-          id="cedula"
-          formControlName="cedula"
-        />
-      </div>
-      <div class="col-md-6">
-        <label for="validationDefault02" class="form-label"
-          ><strong>Celular</strong></label
-        >
-        <input
-          type="number"
-          class="form-control"
-          id="celular"
-          formControlName="celular"
-          [ngClass]="
-            { 'is-invalid': hasErrors('celular', 'required') } || {
-              'is-invalid': hasErrors('celular', 'minlength')
-            }
-          "
-          required
-        />
-        <div class="text-danger" *ngIf="hasErrors('celular', 'required')">
-          Campo requerido
+    </div>
+    <div class=" p-1">
+      <form class="row g-3" [formGroup]="clienteForm">
+        <div class="col-md-6">
+          <label for="validationDefault01" class="form-label"
+            ><strong>Nombre</strong></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="documento"
+            formControlName="nombre"
+          />
         </div>
-        <div class="text-danger" *ngIf="hasErrors('celular', 'minlength')">
-          El celular debe tener al menos 7 caracteres
+        <div class="col-md-6">
+          <label for="validationDefault02" class="form-label"
+            ><strong>Celular</strong></label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="cedula"
+            formControlName="cedula"
+          />
         </div>
-      </div>
-      <div class="col-md-6">
-        <label for="validationDefault02" class="form-label"
-          ><strong>Dirección</strong></label
-        >
-        <input
-          type="text"
-          class="form-control"
-          id="direccion"
-          formControlName="direccion"
-        />
-      </div>
-    </form>
+        <div class="col-md-6">
+          <label for="validationDefault02" class="form-label"
+            ><strong>Nombre</strong></label
+          >
+          <input
+            type="number"
+            class="form-control"
+            id="celular"
+            formControlName="celular"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="validationDefault02" class="form-label"
+            ><strong>Celular</strong></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="direccion"
+            formControlName="direccion"
+          /> 
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 }
