@@ -14,6 +14,7 @@ export interface Prestamos {
     totalPagar:      number;
     fechaInicio:     Date;
     interesGenerado: number;
+    estado:          string;
 }
 export interface Cliente {
     id:        number;

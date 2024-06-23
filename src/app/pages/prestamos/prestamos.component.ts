@@ -10,5 +10,6 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
   styleUrl: './prestamos.component.css'
 })
 export class PrestamosComponent {
-
+  @Input() prestamos?: Prestamos[];
+  @Input() cliente?: Cliente;
 }

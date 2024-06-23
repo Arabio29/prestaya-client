@@ -12,7 +12,7 @@
             data-bs-toggle="modal"
             data-bs-target="#exampleModalLabel"
           >
-            <i class="fa-solid fa-coins"></i>
+            <i class="fa-solid fa-plus"></i>
             Agregar Prestamo
           </button>
         </div>
@@ -48,18 +48,26 @@
               <td>{{ prestamo.cuotaPagar }}</td>
               <td>{{ prestamo.totalPagar }}</td>
               <td>{{ prestamo.interesGenerado }}</td>
-              <td>Cancelado</td>
-              <td>
+              <td class="text-center">
+                <button [ngClass]="{
+                  'btn-red': prestamo.estado === 'PENDIENTE',
+                  'btn-green': prestamo.estado === 'CANCELADO',
+                  'btn btn-black': prestamo.estado === 'VENCIDO'
+              }">
+                {{ prestamo.estado }}
+              </button>
+              </td>
+              <td class="text-center">
                 <button
                   class="btn btn-outline-success"
                   data-bs-toggle="modal"
                   data-bs-target="#abonoModalLabel"
                 >
-                  <i class="fa-solid fa-plus"></i>
+                  <i class="fa-solid fa-coins"></i>
                   Abono
                 </button>
               </td>
-              <td>
+              <td class="text-center">
                 <button
                   class="btn btn-primary"
                   data-bs-toggle="modal"
