@@ -1,25 +1,47 @@
-<div class="d-flex justify-content-center align-items-center vh-100" style="background-image: url('https://images6.alphacoders.com/134/thumb-1920-1345576.jpeg'); background-size: cover; background-position: center;">
-    <div class="max-w-md position-relative p-4 rounded-md text-white bg-dark bg-opacity-90">
-        <div class="text-center">
-            <h1 class="text-2xl font-bold mb-2">Bienvenido a Presta<span class="text-primary">Net</span></h1>
-            <p class="text-sm font-normal mb-4">Ingresa con tu cuenta</p>
-        </div>
-        <form class="d-flex flex-column gap-3" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-                <label for="email" class="form-label">Usuario</label>
-                <input type="text" [(ngModel)]="username" [ngModelOptions]="{ standalone: true }" id="email" class="form-control">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" [(ngModel)]="password" [ngModelOptions]="{ standalone: true }" id="password" class="form-control">
-            </div>
-            <div class="mb-3">
-                <a href="#" class="text-sm text-primary">¿Olvidaste tu contraseña?</a>
-            </div>
-            <button type="submit" class="btn btn-primary mx-auto">Entrar</button>
-        </form>
+<div
+  class="d-flex justify-content-center align-items-center vh-100"
+  style="
+    background-image: url('https://images6.alphacoders.com/134/thumb-1920-1345576.jpeg');
+    background-size: cover;
+    background-position: center;
+  "
+>
+  <div
+    class="max-w-md position-relative p-4 rounded-md text-white bg-dark bg-opacity-90"
+  >
+    <div class="text-center">
+      <h1 class="text-2xl font-bold mb-2">
+        Bienvenido a Presta<span class="text-primary">Net</span>
+      </h1>
+      <p class="text-sm font-normal mb-4">Ingresa con tu cuenta</p>
     </div>
+    <form
+      [formGroup]="loginForm"
+      class="d-flex flex-column gap-3"
+      (ngSubmit)="onSubmit()"
+    >
+      <div class="mb-3">
+        <label for="email" class="form-label">Usuario</label>
+        <input
+          type="text"
+          formControlName="username"
+          id="email"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          id="password"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <a href="#" class="text-sm text-primary">¿Olvidaste tu contraseña?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+    </form>
+  </div>
 </div>
-
-
-  
