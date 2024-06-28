@@ -23,7 +23,6 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
         localStorage.setItem('token', response.token);
-        console.log('token', response.token)
       })
     );
   }
@@ -33,7 +32,10 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isLoggedIn() {
-    return !!localStorage.getItem('token');
+  isLoggedIn(): boolean {
+    if (typeof window !== 'undefined' && localStorage.getItem('token')) {
+      return true;
+    }
+    return false;
   }
 }
