@@ -36,30 +36,36 @@ export class ClientesComponent implements OnInit {
 
 
   ngOnInit(): void {
+    // Al inicializar, obtiene todos los clientes
     this.getAllClient();
   }
 
-  navegate(id:number){
-    console.log(id)
-    this._router.navigate(['/clientes', id])
+  navigate(id: number) {
+    // Navega a la página de detalles del cliente
+    this._router.navigate(['/clientes', id]);
   }
 
   getAllClient(): void {
+    // Llama al servicio para obtener la lista de clientes
     this.clienteService.getAllClients().subscribe(
       (response: ResponseData | Cliente[]) => {
         if (Array.isArray(response)) {
+          // Si la respuesta es un array, lo asigna a la lista de clientes
           this.clientes = response as Cliente[];
         } else {
+          // Verifica si la respuesta es exitosa y contiene datos
           if (response.status === 'OK' && response.data) {
             this.clientes = response.data;
           } else {
+            // Muestra un mensaje de error si la respuesta no es correcta
             this.errorMessage = response.error || 'Error en la respuesta del servidor';
           }
         }
       },
       error => {
+        // Maneja errores en la comunicación con el servidor
         console.error('Error al obtener los clientes:', error);
-        this.errorMessage = 'Error en la comunicación con el servidor'
+        this.errorMessage = 'Error en la comunicación con el servidor';
       }
     );
   }
